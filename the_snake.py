@@ -1,3 +1,5 @@
+"""Змейка=("""
+
 import pygame
 
 from random import randint
@@ -27,6 +29,7 @@ clock = pygame.time.Clock()
 
 class GameObject:
     """Базовый класс для всех игровых объектов."""
+
     def __init__(
         self,
         position: tuple[int, int] = (0, 0),
@@ -48,6 +51,7 @@ class GameObject:
 
 class Apple(GameObject):
     """Класс, представляющий яблоко в игре."""
+
     def __init__(self):
         """Инициализация яблока с случайной позицией и красным цветом."""
         super().__init__((0, 0), APPLE_COLOR)
@@ -68,6 +72,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс, управляющий змейкой и её поведением."""
+
     def __init__(self):
         """Инициализация змейки с начальными параметрами."""
         super().__init__((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), SNAKE_COLOR)
