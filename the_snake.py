@@ -158,12 +158,13 @@ def handle_keys(game_object: Snake):
                 game_object.next_direction = RIGHT
 
 
+clock = pygame.time.Clock()
+
+
 def main():
     """Основная функция игры."""
     pygame.init()
     global clock
-    clock = pygame.time.Clock()
-
     snake = Snake()
     apple = Apple()
 
