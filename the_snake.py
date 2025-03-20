@@ -66,24 +66,23 @@ class GameObject:
 class Apple(GameObject):
     """Класс, представляющий яблоко в игре."""
 
-    def __init__(self):
+    def __init__(self, snake_positions: list[tuple[int, int]]):
         """Инициализация яблока с случайной позицией и красным цветом."""
         super().__init__((0, 0), APPLE_COLOR)
-        self.randomize_position([])
+        self.randomize_position(snake_positions)
 
     def randomize_position(self, snake_positions: list[tuple[int, int]]):
         """
-        Устанавливает случайную позицию в пределах игрового поля.
+        Устанавливает случайную позицию в пределах игрового поля,
         учитывая занятые позиции змейки.
         """
         while True:
-            new_position = (
+            self.position = (
                 randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                 randint(0, GRID_HEIGHT - 1) * GRID_SIZE
             )
 
-            if new_position not in snake_positions:
-                self.position = new_position
+            if self.position not in snake_positions:
                 break
 
     def draw(self):
@@ -114,9 +113,10 @@ class Snake(GameObject):
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
 
-        new_head_x = (head_x + dx * GRID_SIZE) % SCREEN_WIDTH
-        new_head_y = (head_y + dy * GRID_SIZE) % SCREEN_HEIGHT
-        new_head = (new_head_x, new_head_y)
+        new_head = (
+            (head_x + dx * GRID_SIZE) % SCREEN_WIDTH,
+            (head_y + dy * GRID_SIZE) % SCREEN_HEIGHT
+        )
 
         self.positions.insert(0, new_head)
 
@@ -175,7 +175,7 @@ def main():
     """Основная функция игры."""
     pg.init()
     snake = Snake()
-    apple = Apple()
+    apple = Apple(snake.positions)  # Передаем начальные позиции змейки
 
     while True:
         clock.tick(SPEED)
@@ -186,8 +186,7 @@ def main():
         if snake.get_head_position() in snake.positions[4:]:
             snake.reset()
             apple.randomize_position(snake.positions)
-
-        if snake.get_head_position() == apple.position:
+        elif snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
 
